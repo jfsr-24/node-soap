@@ -98,6 +98,10 @@ export class WSSecurityCert implements ISecurity {
     };
     this.x509Id = `x509-${generateId()}`;
     this.hasTimeStamp = typeof options.hasTimeStamp === 'undefined' ? true : !!options.hasTimeStamp;
+    //Set New Properties
+    this.hasUserToken = typeof options.hasUserToken === 'undefined' ? true : !!options.hasUserToken;	
+    this.strUserToken = typeof options.strUserToken === 'undefined' ? '' : options.strUserToken;
+
     this.signatureTransformations = Array.isArray(options.signatureTransformations) ? options.signatureTransformations
       : [ 'http://www.w3.org/2000/09/xmldsig#enveloped-signature', 'http://www.w3.org/2001/10/xml-exc-c14n#' ];
 
