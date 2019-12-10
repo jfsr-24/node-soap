@@ -32,6 +32,8 @@ const oasisBaseUri = 'http://docs.oasis-open.org/wss/2004/01';
 
 export interface IWSSecurityCertOptions {
   hasTimeStamp?: boolean;
+  strUserToken?: string;
+  hasUserToken?: boolean;
   signatureTransformations?: string[];
   signatureAlgorithm?: string;
   additionalReferences?: string[];
@@ -50,6 +52,8 @@ export class WSSecurityCert implements ISecurity {
   private signerOptions: IXmlSignerOptions = {};
   private x509Id: string;
   private hasTimeStamp: boolean;
+  private hasUserToken: boolean;
+  private strUserToken: string;
   private signatureTransformations: string[];
   private created: string;
   private expires: string;
@@ -111,11 +115,14 @@ export class WSSecurityCert implements ISecurity {
 
     let timestampStr = '';
     if (this.hasTimeStamp) {
-      timestampStr =
-        `<Timestamp xmlns="${oasisBaseUri}/oasis-200401-wss-wssecurity-utility-1.0.xsd" Id="_1">` +
-        `<Created>${this.created}</Created>` +
-        `<Expires>${this.expires}</Expires>` +
-        `</Timestamp>`;
+      if(this.hasUserToken){
+          timestampStr = this.strUserToken;
+      }
+      timestampStr += timestampStr +
+          "<Timestamp xmlns=\"" + oasisBaseUri + "/oasis-200401-wss-wssecurity-utility-1.0.xsd\" Id=\"_1\">" +
+              ("<Created>" + this.created + "</Created>") +
+              ("<Expires>" + this.expires + "</Expires>") +
+              "</Timestamp>";
     }
 
     const secHeader =
