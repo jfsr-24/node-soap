@@ -421,7 +421,7 @@ export class Client extends EventEmitter {
       (this.bodyAttributes ? this.bodyAttributes.join(' ') : '') +
       (this.security && this.security.postProcess ? ' Id="_0"' : '') +
       '>' +
-      message +
+      message.replace(/<id:respuesta>/gi,'<id:respuesta xmlns:id="http://ws.id.dc.com/v1">') +
       '</' + envelopeKey + ':Body>' +
       '</' + envelopeKey + ':Envelope>';
 
